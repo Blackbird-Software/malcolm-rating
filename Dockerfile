@@ -17,5 +17,5 @@ RUN yarn install --dev
 COPY . .
 
 # Exports
-EXPOSE 50051
+EXPOSE 5000 3000
 CMD [ "yarn", "run", "start:dev" ]

@@ -9,7 +9,8 @@ services:
       - .:/opt/app
       - /opt/app/node_modules
     ports:
-      - 50051:50051
+      - 5000:5000
+      - 3002:3000
     depends_on:
       - ratings_db
   ratings_db:

@@ -1,5 +1,14 @@
-import {ClientGrpc, GrpcMethod} from '@nestjs/microservices';
-import {Controller, Inject, OnModuleInit, UseFilters, UsePipes, ValidationPipe} from '@nestjs/common';
+import {ClientGrpc, GrpcMethod, RpcException} from '@nestjs/microservices';
+import {
+    BadRequestException,
+    Controller,
+    Inject,
+    OnModuleInit,
+    UseFilters,
+    UsePipes,
+    ValidationError,
+    ValidationPipe
+} from '@nestjs/common';
 import {RatingDto} from './dto/rating.dto';
 import RatingsRpcService from './interfaces/ratings-rpc-service.interface';
 import {RatingsService} from './ratings.service';
@@ -11,7 +20,10 @@ import {GRpcExceptionFilter} from '../filters/grpc-exception.filter';
 
 @Controller()
 @UseFilters(new GRpcExceptionFilter())
-@UsePipes(new ValidationPipe())
+@UsePipes(new ValidationPipe({
+    exceptionFactory: (errors: ValidationError[]) =>
+        new RpcException('Validation error occurred. ')
+}))
 export class RatingsController implements OnModuleInit {
 
     private ratingsRpcService: RatingsRpcService;

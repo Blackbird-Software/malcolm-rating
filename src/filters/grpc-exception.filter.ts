@@ -1,5 +1,5 @@
 import {Catch, ArgumentsHost, HttpException, ExceptionFilter} from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
+import {RpcException} from '@nestjs/microservices';
 
 @Catch(HttpException)
 export class GRpcExceptionFilter implements ExceptionFilter<HttpException> {

@@ -1,13 +1,23 @@
-import {NestFactory, Reflector} from '@nestjs/core';
-import { grpcClientOptions } from './grpc-client.options';
+import {NestFactory} from '@nestjs/core';
 import {AppModule} from './app.module';
-import {ClassSerializerInterceptor} from '@nestjs/common';
-import {MicroserviceOptions} from "@nestjs/microservices";
+import config from 'config';
+import {Logger} from '@nestjs/common';
+import {grpcClientOptions} from './grpc-client.options';
 
 async function bootstrap() {
-    const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, grpcClientOptions);
-    app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
-    await app.listenAsync();
+    const logger = new Logger('bootstrap');
+    const serverConfig = config.server;
+    const app = await NestFactory.create(AppModule);
+
+    app.connectMicroservice(grpcClientOptions);
+    await app.startAllMicroservicesAsync();
+
+    app.enableShutdownHooks();
+
+    const port = process.env.PORT || serverConfig.port;
+
+    await app.listen(port);
+    logger.log(`Application listening on port ${port}`);
 }
 
 bootstrap();

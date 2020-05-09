@@ -1,10 +1,10 @@
 import {Module} from '@nestjs/common';
 import {ClientsModule} from '@nestjs/microservices';
-import {grpcClientOptions} from '../grpc-client.options';
 import {RatingsController} from './ratings.controller';
 import {RatingsService} from './ratings.service';
 import {RatingsRepository} from './ratings.repository';
 import {TypeOrmModule} from '@nestjs/typeorm';
+import {grpcClientOptions} from '../grpc-client.options';
 
 @Module({
     imports: [
