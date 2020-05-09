@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package ratings;
+
+enum RatingType {
+  BOOK = 0;
+  MOVIE = 1;
+}
+
+message RatingDto {
+  uint32 value = 1;
+  string comment = 2;
+  RatingType type = 3;
+}
+
+message Rating {
+  string id = 1;
+  uint32 value = 2;
+  string comment = 3;
+  string type = 4;
+}
+
+service RatingsRpcService {
+  rpc FindById (GetRatingRequest) returns (Rating);
+  rpc ListAllByType (GetRatingsTypeRequest) returns (Ratings);
+  rpc ListAll (Empty) returns (stream Ratings);
+  rpc Save (RatingDto) returns (Rating);
+}
+
+message Empty {}
+
+message GetRatingRequest {
+  string id = 1;
+}
+
+message GetRatingsTypeRequest {
+  RatingType type = 1;
+}
+
+message Ratings {
+  repeated Rating items = 1;
+}
