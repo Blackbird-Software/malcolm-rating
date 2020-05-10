@@ -8,6 +8,7 @@ import GetRatingTypeDto from '../dto/get-rating-type.dto';
 export default interface RatingsRpcService {
     save(dto: RatingDto): Promise<RatingInterface>;
     findById(dto: GetRatingDto): Promise<RatingInterface>;
-    listAllStream(dto: {}): Observable<RatingsInterface>;
-    listAllByTypeStream(dto: GetRatingTypeDto): Promise<RatingsInterface>;
+    findByIdStream(upstream: Observable<GetRatingDto>): Promise<Observable<RatingInterface>>;
+    listAll(req: {}): Promise<RatingsInterface>;
+    listAllByType(dto: GetRatingTypeDto): Promise<RatingsInterface>;
 }

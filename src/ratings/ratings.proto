@@ -22,8 +22,9 @@ message Rating {
 
 service RatingsRpcService {
   rpc FindById (GetRatingRequest) returns (Rating);
+  rpc FindByIdStream (stream GetRatingRequest) returns (stream Rating);
   rpc ListAllByType (GetRatingsTypeRequest) returns (Ratings);
-  rpc ListAll (Empty) returns (stream Ratings);
+  rpc ListAll (Empty) returns (Ratings);
   rpc Save (RatingDto) returns (Rating);
 }
 
