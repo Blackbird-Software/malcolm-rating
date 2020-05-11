@@ -1,6 +1,5 @@
 import {ClientGrpc, GrpcMethod, GrpcStreamMethod, RpcException} from '@nestjs/microservices';
 import {
-    BadRequestException,
     Controller,
     Inject,
     OnModuleInit,
@@ -17,7 +16,7 @@ import {GetRatingDto} from './dto/get-rating.dto';
 import GetRatingTypeDto from './dto/get-rating-type.dto';
 import RatingTypeConverter from './enum/rating-type-converter';
 import {GRpcExceptionFilter} from '../filters/grpc-exception.filter';
-import {Observable, ReplaySubject, Subject} from "rxjs";
+import {Observable, Subject} from 'rxjs';
 
 @Controller()
 @UseFilters(new GRpcExceptionFilter())
@@ -40,12 +39,12 @@ export class RatingsController implements OnModuleInit {
     }
 
     @GrpcMethod('RatingsRpcService')
-    save(dto: RatingDto): Promise<RatingInterface> {
+    async save(dto: RatingDto): Promise<RatingInterface> {
         return this.ratingsService.create(dto);
     }
 
     @GrpcMethod('RatingsRpcService')
-    findById(dto: GetRatingDto, metadata: any): Promise<RatingInterface> {
+    async findById(dto: GetRatingDto, metadata: any): Promise<RatingInterface> {
         const {id} = dto;
         return this.ratingsService.findById(id);
     }
@@ -65,15 +64,19 @@ export class RatingsController implements OnModuleInit {
     }
 
     @GrpcStreamMethod('RatingsRpcService')
-    async findByIdStream(messages: Observable<GetRatingDto>): Promise<Observable<any>> {
-        console.log(messages, 't');
-        console.log(typeof messages, 'm.t');
-        const s = new Subject();
-        const o = s.asObservable();
-        messages.subscribe(async (dto: GetRatingDto) => {
-            const item = await this.ratingsService.findById(dto.id);
-            s.next(item);
+    async findByIdStream(messages: any, metadata: any): Promise<Observable<RatingInterface>> {
+        const subject = new Subject<RatingInterface>();
+        messages.subscribe({
+            next: async (dto: GetRatingDto) => {
+                const item = await this.ratingsService.findById(dto.id);
+                subject.next(item);
+            },
+            error: (err: any) => {
+                throw new RpcException('Could not process stream.')
+            },
+            complete: () => subject.complete()
         });
-        return o;
+
+        return subject.asObservable();
     }
 }
