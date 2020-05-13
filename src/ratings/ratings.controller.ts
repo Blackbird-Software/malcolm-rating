@@ -9,14 +9,15 @@ import {
     ValidationPipe
 } from '@nestjs/common';
 import {RatingDto} from './dto/rating.dto';
-import RatingsRpcService from './interfaces/ratings-rpc-service.interface';
+import RatingsRpcService from './interface/ratings-rpc-service.interface';
 import {RatingsService} from './ratings.service';
-import {RatingInterface} from './rating.interface';
+import {RatingInterface} from './interface/rating.interface';
 import {GetRatingDto} from './dto/get-rating.dto';
 import GetRatingTypeDto from './dto/get-rating-type.dto';
 import RatingTypeConverter from './enum/rating-type-converter';
-import {GRpcExceptionFilter} from '../filters/grpc-exception.filter';
+import {GRpcExceptionFilter} from '../filter/grpc-exception.filter';
 import {Observable, Subject} from 'rxjs';
+import RatingsResponseInterface from "./interface/ratings-response.interface";
 
 @Controller()
 @UseFilters(new GRpcExceptionFilter())
@@ -45,18 +46,17 @@ export class RatingsController implements OnModuleInit {
 
     @GrpcMethod('RatingsRpcService')
     async findById(dto: GetRatingDto, metadata: any): Promise<RatingInterface> {
-        const {id} = dto;
-        return this.ratingsService.findById(id);
+        return this.ratingsService.findById(dto.id);
     }
 
     @GrpcMethod('RatingsRpcService')
-    async listAll(): Promise<any> {
+    async listAll(): Promise<RatingsResponseInterface> {
         const ratings = await this.ratingsService.findAll();
         return {items: ratings};
     }
 
     @GrpcMethod('RatingsRpcService')
-    async listAllByType(dto: GetRatingTypeDto, metadata: any): Promise<any> {
+    async listAllByType(dto: GetRatingTypeDto, metadata: any): Promise<RatingsResponseInterface> {
         const type = RatingTypeConverter.fromIntToRatingType(dto.type);
         const ratings = await this.ratingsService.findByType(type);
 

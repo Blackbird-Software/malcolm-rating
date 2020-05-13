@@ -7,8 +7,8 @@ export const grpcClientOptions: GrpcOptions = {
         url: '0.0.0.0:5000',
         package: ['ratings', 'health'],
         protoPath: [
-            join(__dirname, './ratings/ratings.proto'),
-            join(__dirname, './health/health.proto'),
+            join(__dirname, './../ratings/ratings.proto'),
+            join(__dirname, './../health/health.proto'),
         ]
     },
 };

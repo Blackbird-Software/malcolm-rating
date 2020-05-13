@@ -1,16 +1,16 @@
 import {Injectable, NotFoundException} from '@nestjs/common';
-import {RatingsRepository} from './ratings.repository';
+import {RatingRepository} from './rating.repository';
 import {InjectRepository} from '@nestjs/typeorm';
 import {RatingDto} from './dto/rating.dto';
-import {RatingInterface} from './rating.interface';
-import {RatingsInterface} from './interfaces/ratings.interface';
+import {RatingInterface} from './interface/rating.interface';
+import {RatingsInterface} from './interface/ratings.interface';
 
 @Injectable()
 export class RatingsService {
 
     constructor(
-        @InjectRepository(RatingsRepository)
-        private readonly ratingsRepository: RatingsRepository,
+        @InjectRepository(RatingRepository)
+        private readonly ratingsRepository: RatingRepository,
     ) {
     }
 

@@ -1,5 +1,5 @@
 import {BaseEntity, Column, Entity, Index, PrimaryGeneratedColumn} from 'typeorm';
-import {RatingInterface} from './rating.interface';
+import {RatingInterface} from './interface/rating.interface';
 
 @Entity('ratings')
 export class Rating extends BaseEntity implements RatingInterface {

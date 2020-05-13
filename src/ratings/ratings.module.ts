@@ -2,9 +2,9 @@ import {Module} from '@nestjs/common';
 import {ClientsModule} from '@nestjs/microservices';
 import {RatingsController} from './ratings.controller';
 import {RatingsService} from './ratings.service';
-import {RatingsRepository} from './ratings.repository';
+import {RatingRepository} from './rating.repository';
 import {TypeOrmModule} from '@nestjs/typeorm';
-import {grpcClientOptions} from '../grpc-client.options';
+import {grpcClientOptions} from '../config/grpc-client.options';
 
 @Module({
     imports: [
@@ -14,8 +14,8 @@ import {grpcClientOptions} from '../grpc-client.options';
                 ...grpcClientOptions,
             },
         ]),
-        TypeOrmModule.forFeature([RatingsRepository]),
-        RatingsRepository
+        TypeOrmModule.forFeature([RatingRepository]),
+        RatingRepository
     ],
     controllers: [RatingsController],
     providers: [RatingsService]
