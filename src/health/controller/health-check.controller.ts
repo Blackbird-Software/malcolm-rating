@@ -1,9 +1,9 @@
 import {Controller, Inject, OnModuleInit} from '@nestjs/common';
 import {ClientGrpc, GrpcMethod} from '@nestjs/microservices';
-import HealthCheckRequest from '../interfaces/health-check-request';
-import HealthCheckResponse from '../interfaces/health-check-response';
-import {ServingStatus} from '../interfaces/serving-status.enum';
-import HealthRpcService from '../interfaces/health-rpc-service.interface';
+import HealthCheckRequest from '../interface/health-check-request';
+import HealthCheckResponse from '../interface/health-check-response';
+import {ServingStatus} from '../interface/serving-status.enum';
+import HealthRpcService from '../interface/health-rpc-service.interface';
 
 @Controller()
 export class HealthCheckController implements OnModuleInit {
