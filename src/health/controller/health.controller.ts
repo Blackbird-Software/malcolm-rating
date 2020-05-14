@@ -26,9 +26,9 @@ export class HealthController {
     async readiness() {
         return this.healthCheckService.check([
             () => this.typeOrmHealthIndicator.pingCheck('database', {timeout: 300}),
-            () => this.diskHealthIndicator.checkStorage('storage', {thresholdPercent: 0.7, path: '/'}),
+            () => this.diskHealthIndicator.checkStorage('storage', {thresholdPercent: 0.9, path: '/'}),
             () => this.memoryHealthIndicator.checkHeap('memory_rss', 250 * 1024 * 1024),
-            () => this.gRpcHealthIndicator.checkService('gRpc_service', 'whatever', {
+            () => this.gRpcHealthIndicator.checkService('grpc_service', 'whatever', {
                 package: 'health',
                 healthServiceName: 'HealthRpcService',
                 protoPath: join(__dirname, '/../health.proto'),
