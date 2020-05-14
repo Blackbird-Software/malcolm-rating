@@ -1,4 +1,9 @@
-version: '3.3'
+version: '3.5'
+
+networks:
+  malcolm_network:
+    driver: bridge
+    name: malcolm_network
 
 services:
   ratings_web:
@@ -13,6 +18,8 @@ services:
       - 3002:3000
     depends_on:
       - ratings_db
+    networks:
+      - malcolm_network
   ratings_db:
     container_name: ratings_db
     image: mysql:5.7
@@ -29,6 +36,8 @@ services:
       - 3306
     volumes:
       - db-data:/var/lib/mysql
+    networks:
+      - malcolm_network
 
 volumes:
   db-data:
