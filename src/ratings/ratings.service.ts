@@ -5,6 +5,7 @@ import {RatingDto} from './dto/rating.dto';
 import {RatingInterface} from './interface/rating.interface';
 import {RatingsInterface} from './interface/ratings.interface';
 import {LogsService} from '../logs/logs.service';
+import {ActionType} from '../enum/action-types';
 
 @Injectable()
 export class RatingsService {
@@ -17,7 +18,7 @@ export class RatingsService {
 
     async create(dto: RatingDto): Promise<RatingInterface> {
         const rating = await this.ratingsRepository.createRating(dto);
-        await this.logsService.sendMessage(rating);
+        await this.logsService.sendMessage(rating, ActionType.CREATE);
 
         return rating;
     }

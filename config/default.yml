@@ -14,3 +14,7 @@ queue:
 
 jwt:
   expiresIn: 3600
+
+service:
+  id: 3
+  name: RATINGS
