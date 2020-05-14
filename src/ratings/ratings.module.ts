@@ -5,7 +5,7 @@ import {RatingsService} from './ratings.service';
 import {RatingRepository} from './rating.repository';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {grpcClientOptions} from '../config/option/grpc-client.options';
-import {rmqClientOptions} from "../config/option/rmq-client.options";
+import {LogsModule} from '../logs/logs.module';
 
 @Module({
     imports: [
@@ -15,14 +15,9 @@ import {rmqClientOptions} from "../config/option/rmq-client.options";
                 ...grpcClientOptions,
             },
         ]),
-        ClientsModule.register([
-            {
-                name: 'QUEUE_SERVICE',
-                ...rmqClientOptions,
-            },
-        ]),
         TypeOrmModule.forFeature([RatingRepository]),
-        RatingRepository
+        RatingRepository,
+        LogsModule
     ],
     controllers: [RatingsController],
     providers: [RatingsService]

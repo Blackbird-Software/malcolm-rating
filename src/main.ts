@@ -3,7 +3,7 @@ import {AppModule} from './app.module';
 import config from 'config';
 import {Logger} from '@nestjs/common';
 import {grpcClientOptions} from './config/option/grpc-client.options';
-import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
+import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
 
 async function bootstrap() {
     const logger = new Logger('bootstrap');

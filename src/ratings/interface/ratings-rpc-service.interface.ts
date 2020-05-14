@@ -3,7 +3,7 @@ import {Observable} from 'rxjs';
 import {RatingInterface} from './rating.interface';
 import {GetRatingDto} from '../dto/get-rating.dto';
 import GetRatingTypeDto from '../dto/get-rating-type.dto';
-import RatingsResponseInterface from "./ratings-response.interface";
+import RatingsResponseInterface from './ratings-response.interface';
 
 export default interface RatingsRpcService {
     save(dto: RatingDto): Promise<RatingInterface>;

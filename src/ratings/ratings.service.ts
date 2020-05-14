@@ -1,42 +1,23 @@
-import {Inject, Injectable, NotFoundException, OnModuleInit} from '@nestjs/common';
+import {Injectable, NotFoundException} from '@nestjs/common';
 import {RatingRepository} from './rating.repository';
 import {InjectRepository} from '@nestjs/typeorm';
 import {RatingDto} from './dto/rating.dto';
 import {RatingInterface} from './interface/rating.interface';
 import {RatingsInterface} from './interface/ratings.interface';
-import {ClientProxy} from "@nestjs/microservices";
-import {MessagePatternType} from "../enum/message-pattern-type";
+import {LogsService} from '../logs/logs.service';
 
 @Injectable()
-export class RatingsService implements OnModuleInit {
+export class RatingsService {
 
     constructor(
         @InjectRepository(RatingRepository) private readonly ratingsRepository: RatingRepository,
-        @Inject('QUEUE_SERVICE') private readonly clientRmq: ClientProxy,
+        private readonly logsService: LogsService
     ) {
-    }
-
-    async onModuleInit() {
-        await this.clientRmq.connect();
     }
 
     async create(dto: RatingDto): Promise<RatingInterface> {
         const rating = await this.ratingsRepository.createRating(dto);
-
-        // @TODO move to service
-        const pattern = {type: MessagePatternType.APP_LOGS};
-        const data = {
-            action: 0,
-            service: 2,
-            objectId: rating.id,
-            object: JSON.stringify(rating)
-        };
-        this.clientRmq.send(pattern, data)
-            .toPromise()
-            .catch((error: any) => {
-                    console.error(error);
-                }
-            );
+        await this.logsService.sendMessage(rating);
 
         return rating;
     }

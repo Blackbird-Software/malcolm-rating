@@ -17,7 +17,7 @@ import GetRatingTypeDto from './dto/get-rating-type.dto';
 import RatingTypeConverter from './enum/rating-type-converter';
 import {GRpcExceptionFilter} from '../filter/grpc-exception.filter';
 import {Observable, Subject} from 'rxjs';
-import RatingsResponseInterface from "./interface/ratings-response.interface";
+import RatingsResponseInterface from './interface/ratings-response.interface';
 
 @Controller()
 @UseFilters(new GRpcExceptionFilter())
@@ -71,7 +71,7 @@ export class RatingsController implements OnModuleInit {
                 const item = await this.ratingsService.findById(dto.id);
                 subject.next(item);
             },
-            error: (err: any) => {
+            error: (error: any) => {
                 throw new RpcException('Could not process stream.')
             },
             complete: () => subject.complete()
