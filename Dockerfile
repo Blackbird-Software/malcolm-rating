@@ -6,8 +6,7 @@ WORKDIR /opt/app
 COPY . /opt/app
 
 RUN apt-get update
-RUN apt-get install -y mysql-server \
-                       vim
+RUN apt-get install -y mysql-server vim
 
 # Install dependencies
 COPY package.json .

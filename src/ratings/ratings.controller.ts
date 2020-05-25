@@ -3,7 +3,7 @@ import {
     Controller,
     Inject,
     OnModuleInit,
-    UseFilters,
+    UseFilters, UseGuards,
     UsePipes,
     ValidationError,
     ValidationPipe
@@ -18,6 +18,7 @@ import RatingTypeConverter from './enum/rating-type-converter';
 import {GRpcExceptionFilter} from '../filter/grpc-exception.filter';
 import {Observable, Subject} from 'rxjs';
 import RatingsResponseInterface from './interface/ratings-response.interface';
+import {GrpcAuthGuard} from "../auth/jwt/grpc.guard";
 
 @Controller()
 @UseFilters(new GRpcExceptionFilter())
@@ -25,6 +26,7 @@ import RatingsResponseInterface from './interface/ratings-response.interface';
     exceptionFactory: (errors: ValidationError[]) =>
         new RpcException('Validation error occurred. ')
 }))
+@UseGuards(GrpcAuthGuard)
 export class RatingsController implements OnModuleInit {
 
     private ratingsRpcService: RatingsRpcService;

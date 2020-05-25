@@ -8,6 +8,8 @@ networks:
 services:
   ratings_web:
     container_name: ratings_web
+    env_file:
+      - .env
     build: .
     restart: always
     volumes:
